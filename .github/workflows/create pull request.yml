@@ -18,4 +18,4 @@ jobs:
           title: 'Merge Main into Master'
           body: 'This pull request merges changes from the main branch into the master branch.'
           base: branch_for_release_test # The branch you want to merge into
-          head: main # The branch you want to merge from
+          head: master # The branch you want to merge from
