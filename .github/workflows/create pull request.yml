@@ -6,14 +6,23 @@ on:
     branches: [ master ]
     
 jobs:
-  auto-pull-request:
-    name: PullRequestAction
-    runs-on: ubuntu-latest
-    steps:
-      - name: pull-request-action
-        uses: peter-evans/create-pull-request@v5
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: "master"
-          PULL_REQUEST_BRANCH: "branch_for_release_test"
-          BASE: "branch_for_release_test"
+  # auto-pull-request:
+  #   name: PullRequestAction
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: pull-request-action
+  #       uses: vsoch/pull-request-action@master
+  #       env:
+  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #         BRANCH: "master"
+  #         PULL_REQUEST_BRANCH: "branch_for_release_test"
+         
+  - name: Create a pull request
+    uses: peter-evans/create-pull-request@master
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
+      commit-message: 'Merge main branch into production'
+      title: 'Release Merge: ${{ github.event.release.tag_name }}' # Title of the pull request
+      body: 'This pull request merges the main branch into the production branch.' # Body content of the pull request
+      base: branch_for_release_test # The base branch of the pull request
+      branch: master # The head branch of the pull request
