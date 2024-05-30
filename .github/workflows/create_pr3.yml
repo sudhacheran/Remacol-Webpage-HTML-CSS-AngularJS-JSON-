@@ -50,5 +50,7 @@ jobs:
         if: success()
         uses: vsoch/pull-request-action@master
         with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: "master"
-          PULL_REQUEST_BRANCH: "production"
+          PULL_REQUEST_BRANCH: "branch_for_release_test"
+         
