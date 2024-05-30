@@ -11,7 +11,8 @@ jobs:
     steps:
       - name: Get latest release version
         id: get_release
-        run: echo "::set-output name=version::$(curl -sSL https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r '.tag_name')"
+        run: echo "name=version::$(curl -sSL https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r '.tag_name')" >> $GITHUB_OUTPUT
+
 
       - name: Checkout repository
         uses: actions/checkout@v2
