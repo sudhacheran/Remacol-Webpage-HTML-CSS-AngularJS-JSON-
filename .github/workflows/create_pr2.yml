@@ -29,7 +29,6 @@ jobs:
       - name: Create a pull request
         uses: peter-evans/create-pull-request@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: 'Merge latest release into production branch'
           title: 'Merge Latest Release: ${{ steps.get_release.outputs.version }}'
           body: 'This pull request merges the latest release into the production branch.'
