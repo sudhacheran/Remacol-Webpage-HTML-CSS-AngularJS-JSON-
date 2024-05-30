@@ -12,15 +12,9 @@ jobs:
     steps:
       # Step 1: Checkout the repository with full history
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
         with:
           fetch-depth: 0 # Fetch all history for all branches and tags
-
-      # Step 2: Set up Git with a consistent user identity for commits
-      - name: Set up Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       # Step 3: Check out the main branch and pull the latest changes
       - name: Check out main branch
