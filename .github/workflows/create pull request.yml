@@ -2,8 +2,7 @@ name: Create Pull Request to Merge Main into Master
 
 on:
   workflow_dispatch:
-
-    
+  
 jobs:
   auto-pull-request:
     name: PullRequestAction
