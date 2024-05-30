@@ -14,7 +14,7 @@ jobs:
     steps:
       # Step 1: Checkout the repository with full history
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Fetch all history for all branches and tags
 
@@ -27,8 +27,8 @@ jobs:
       # Step 3: Check out the main branch and pull the latest changes
       - name: Check out main branch
         run: |
-          git checkout main
-          git pull origin main
+          git checkout master
+          git pull origin master
 
       # Step 4: Check out the production branch and pull the latest changes
       - name: Check out production branch
@@ -39,7 +39,7 @@ jobs:
       # Step 5: Merge changes from the main branch into the production branch
       - name: Merge main branch into production
         run: |
-          git merge main
+          git merge master
 
       # Step 6: Push the merged changes to the production branch
       - name: Push changes to production branch
@@ -55,4 +55,4 @@ jobs:
           title: 'Release Merge: ${{ github.event.release.tag_name }}' # Title of the pull request
           body: 'This pull request merges the main branch into the production branch.' # Body content of the pull request
           base: branch_for_release_test # The base branch of the pull request
-          head: main # The head branch of the pull request
+          head: master # The head branch of the pull request
