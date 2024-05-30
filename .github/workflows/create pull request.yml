@@ -49,6 +49,11 @@ jobs:
         run: |
           git push origin branch_for_release_test
 
+      # Step 7: Debugging step to list branches and confirm state
+      - name: List branches
+        run: |
+          git branch -a
+
       # Step 7: Create a pull request to merge main into production
       - name: Create a pull request
         uses: peter-evans/create-pull-request@v5
