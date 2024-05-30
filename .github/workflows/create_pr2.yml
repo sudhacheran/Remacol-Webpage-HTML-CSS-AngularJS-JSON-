@@ -14,17 +14,18 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-      # Step to retrieve the latest release version
+          
+      # To retrieve the latest release version
       - name: Get latest release version
         id: get_release
         run: |
           echo "name=version::$(curl -sSL https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r '.tag_name')" >> $GITHUB_OUTPUT
           
-      # Step to checkout the repository
+      # To checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # Step to create a pull request
+      # To create a pull request
       - name: Create a pull request
         uses: peter-evans/create-pull-request@v3
         with:
