@@ -12,9 +12,17 @@ on:
 jobs:
   create-pr:
     runs-on: ubuntu-latest
-  
     steps:
-    # Step 7: Create a pull request to merge main into production
+    - name: Check out main branch
+      run: |
+        git checkout master
+        git pull origin master
+   
+    - name: Check out production branch
+      run: |
+        git checkout branch_for_release_test
+        git pull origin branch_for_release_test
+
     - name: Create a pull request
       uses: peter-evans/create-pull-request@v5
       with:
@@ -23,4 +31,4 @@ jobs:
         title: 'Release Merge: ${{ github.event.release.tag_name }}' # Title of the pull request
         body: 'This pull request merges the main branch into the production branch.' # Body content of the pull request
         base: branch_for_release_test # The base branch of the pull request
-        head: main # The head branch of the pull request
+        head: master # The head branch of the pull request
