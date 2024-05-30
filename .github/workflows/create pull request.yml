@@ -25,7 +25,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       # Step 3: Check out the main branch and pull the latest changes
-      - name: Check out main branch
+      - name: Check out master branch
         run: |
           git checkout master
           git pull origin master
