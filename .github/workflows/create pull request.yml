@@ -39,16 +39,6 @@ jobs:
           git checkout branch_for_release_test
           git pull origin branch_for_release_test
 
-      # Step 5: Merge changes from the main branch into the production branch
-      - name: Merge main branch into production
-        run: |
-          git merge master
-
-      # Step 6: Push the merged changes to the production branch
-      - name: Push changes to production branch
-        run: |
-          git push origin branch_for_release_test
-
       # Step 7: Debugging step to list branches and confirm state
       - name: List branches
         run: |
