@@ -1,0 +1,58 @@
+# Workflow to create a pull request merging changes from the main branch into the production branch upon release.
+
+name: Create Release Pull Request
+
+# Trigger the workflow when a release is published
+on:
+  release:
+    types: [published]
+
+jobs:
+  create-pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the repository with full history
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags
+
+      # Step 2: Set up Git with a consistent user identity for commits
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Step 3: Check out the main branch and pull the latest changes
+      - name: Check out main branch
+        run: |
+          git checkout main
+          git pull origin main
+
+      # Step 4: Check out the production branch and pull the latest changes
+      - name: Check out production branch
+        run: |
+          git checkout branch_for_release_test
+          git pull origin branch_for_release_test
+
+      # Step 5: Merge changes from the main branch into the production branch
+      - name: Merge main branch into production
+        run: |
+          git merge main
+
+      # Step 6: Push the merged changes to the production branch
+      - name: Push changes to production branch
+        run: |
+          git push origin branch_for_release_test
+
+      # Step 7: Create a pull request to merge main into production
+      - name: Create a pull request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
+          commit-message: 'Merge main branch into production'
+          title: 'Release Merge: ${{ github.event.release.tag_name }}' # Title of the pull request
+          body: 'This pull request merges the main branch into the production branch.' # Body content of the pull request
+          base: branch_for_release_test # The base branch of the pull request
+          head: main # The head branch of the pull request
