@@ -1,12 +1,12 @@
-name: Merge Latest Release from main to production Branch
+name: Merge latest release from main to production Branch
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:   #Manual trigger for testing
   release:
-    types: [published]
+    types: [published]  #Triggers when a release is published
 
 jobs:
-  merge-release:
+  release-merge-to-production:
     runs-on: ubuntu-latest
 
     steps:
