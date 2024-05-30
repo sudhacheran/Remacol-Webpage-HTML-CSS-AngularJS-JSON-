@@ -17,9 +17,11 @@ jobs:
       - name: Create pull request
         uses: peter-evans/create-pull-request@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
           commit-message: 'Merge main branch into master'
           title: 'Merge Main into Master'
           body: 'This pull request merges changes from the main branch into the master branch.'
           base: branch_for_release_test # The branch you want to merge into
           head: master # The branch you want to merge from
+          reviewers: "Charlie"
+          add-paths: '*'
+
