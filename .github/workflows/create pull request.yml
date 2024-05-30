@@ -24,7 +24,7 @@ jobs:
         git pull origin branch_for_release_test
 
     - name: Create a pull request
-      uses: peter-evans/create-pull-request@v5
+      uses: peter-evans/create-pull-request@v3
       with:
         token: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
         commit-message: 'Merge main branch into production'
