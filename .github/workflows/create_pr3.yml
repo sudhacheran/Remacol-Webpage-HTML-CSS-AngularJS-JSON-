@@ -1,6 +1,7 @@
 name: Create Release Pull Request
 
 on:
+  workflow_dispatch:
   release:
     types: [published]
 
