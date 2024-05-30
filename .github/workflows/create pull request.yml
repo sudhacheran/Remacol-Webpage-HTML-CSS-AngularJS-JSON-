@@ -1,15 +1,11 @@
-# Workflow to create a pull request merging changes from the main branch into the production branch upon release.
+# Workflow to create a pull request merging changes from the master branch into the production branch upon release.
 
 name: Create Release Pull Request
 
 # Trigger the workflow when a release is published
-# on:
-#   release:
-#     types: [published]
-
-# Trigger the workflow manually via workflow_dispatch
 on:
-  workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   create-pr:
@@ -19,17 +15,33 @@ jobs:
       # Step 1: Checkout the repository with full history
       - name: Checkout repository
         uses: actions/checkout@v4
-        with:  
+        with:
           fetch-depth: 0 # Fetch all history for all branches and tags
 
-      # Step 2: Reset the production branch to the state of the master branch
+      # Step 2: Set up Git with a consistent user identity for commits
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Step 3: Check out the master branch and pull the latest changes
+      - name: Check out master branch
+        run: |
+          git checkout master
+          git pull origin master
+
+      # Step 4: Check out the production branch and reset it to the master branch
       - name: Reset production branch
         run: |
-          git fetch origin master:master
           git checkout branch_for_release_test
-          git reset --hard master
+          git reset --hard origin/master
+    
+      # Step 5: Push the changes to the production branch
+      - name: Push changes to production branch
+        run: |
+          git push origin branch_for_release_test --force
 
-      # Step 3: Create a pull request to merge master into the production branch
+      # Step 6: Create a pull request to merge master into the production branch
       - name: Create a pull request
         uses: peter-evans/create-pull-request@v5
         with:
@@ -39,4 +51,3 @@ jobs:
           body: 'This pull request merges the master branch into the production branch.' # Body content of the pull request
           base: branch_for_release_test # The base branch of the pull request
           head: master # The head branch of the pull request
-
