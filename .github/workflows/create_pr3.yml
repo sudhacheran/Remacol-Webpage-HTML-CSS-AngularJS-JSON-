@@ -50,8 +50,5 @@ jobs:
         if: success()
         uses: vsoch/pull-request-action@master
         with:
-          token: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
-          title: 'Release Merge: ${{ github.event.release.tag_name }}' # Title of the pull request
-          body: 'This pull request merges the main branch into the production branch.' # Body content of the pull request
-          base: production # The base branch of the pull request
-          head: master # The head branch of the pull request
+          BRANCH: "master"
+          PULL_REQUEST_BRANCH: "production"
