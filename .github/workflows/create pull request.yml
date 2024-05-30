@@ -2,40 +2,36 @@
 
 name: Create Release Pull Request
 
-# Trigger the workflow when a release is published
+# Trigger the workflow manually or via workflow_dispatch
 on:
-  # release:
-  #   types: [published]
   workflow_dispatch:
-
 
 jobs:
   create-pr:
     runs-on: ubuntu-latest
     steps:
-
-    - name: Set up Git
-      run: |
+      - name: Set up Git
+        run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-    - name: Check out main branch
-      run: |
-        git checkout origin/master
-        git pull origin master
+      - name: Check out main branch
+        run: |
+          git checkout main
+          git pull origin main
    
-    - name: Check out production branch
-      run: |
-        git checkout branch_for_release_test
-        git pull origin branch_for_release_test
+      - name: Check out production branch
+        run: |
+          git checkout branch_for_release_test
+          git pull origin branch_for_release_test
 
-    - name: Create a pull request
-      uses: peter-evans/create-pull-request@v3
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
-        commit-message: 'Merge main branch into production'
-        title: 'Release Merge: ${{ github.event.release.tag_name }}' # Title of the pull request
-        body: 'This pull request merges the main branch into the production branch.' # Body content of the pull request
-        branch: branch_for_release_test
-        base: branch_for_release_test # The base branch of the pull request
-        head: master # The head branch of the pull request
+      - name: Create a pull request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
+          commit-message: 'Merge main branch into production'
+          title: 'Release Merge: ${{ github.event.release.tag_name }}' # Title of the pull request
+          body: 'This pull request merges the main branch into the production branch.' # Body content of the pull request
+          branch: master # The source branch from which changes will be merged
+          base: branch_for_release_test # The base branch of the pull request
+          head: master # The head branch from which changes will be merged
