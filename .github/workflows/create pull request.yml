@@ -7,6 +7,7 @@ name: Create Release Pull Request
 #   release:
 #     types: [published]
 
+# Trigger the workflow manually via workflow_dispatch
 on:
   workflow_dispatch:
 
@@ -19,20 +20,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:  
-          ref: release
+          fetch-depth: 0 # Fetch all history for all branches and tags
 
-      - name: Reset promotion branch
+      # Step 2: Reset the production branch to the state of the master branch
+      - name: Reset production branch
         run: |
           git fetch origin master:master
+          git checkout branch_for_release_test
           git reset --hard master
-    
-      # Step 7: Create a pull request to merge main into production
+
+      # Step 3: Create a pull request to merge master into the production branch
       - name: Create a pull request
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }} # GitHub token for authentication
-          commit-message: 'Merge main branch into production'
+          commit-message: 'Merge master branch into production'
           title: 'Release Merge: ${{ github.event.release.tag_name }}' # Title of the pull request
-          body: 'This pull request merges the main branch into the production branch.' # Body content of the pull request
+          body: 'This pull request merges the master branch into the production branch.' # Body content of the pull request
           base: branch_for_release_test # The base branch of the pull request
           head: master # The head branch of the pull request
+
