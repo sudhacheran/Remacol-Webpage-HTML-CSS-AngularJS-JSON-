@@ -4,8 +4,9 @@ name: Create Release Pull Request
 
 # Trigger the workflow when a release is published
 on:
-  release:
-    types: [published]
+  # release:
+  #   types: [published]
+  workflow_dispatch:
 
 jobs:
   create-pr:
