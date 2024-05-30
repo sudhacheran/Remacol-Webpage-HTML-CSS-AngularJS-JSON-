@@ -1,7 +1,8 @@
 name: Merge Latest Release to Different Branch
 
 on:
-  workflow_dispatch:
+  release:
+    types: [published]
 
 jobs:
   merge-release:
