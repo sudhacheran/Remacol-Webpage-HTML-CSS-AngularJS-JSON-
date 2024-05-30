@@ -2,8 +2,8 @@ name: Merge Latest Release to Production Branch
 
 on:
   workflow_dispatch:
-  release:
-    types: [published] # Triggers when a new release is published
+  # release:
+  #   types: [published] # Triggers when a new release is published
 
 jobs:
   merge-release:
