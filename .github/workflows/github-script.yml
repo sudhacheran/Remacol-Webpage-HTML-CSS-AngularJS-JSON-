@@ -1,4 +1,4 @@
-name: Move Release to Another Branch
+name: Move2 Release to Another Branch
 
 on:
   release:
