@@ -21,7 +21,10 @@ jobs:
           BRANCH: "master"
           PULL_REQUEST_BRANCH: "production"
           PULL_REQUEST_FROM_BRANCH: "master"
-        with:
-          title: 'Merge Latest Release: ${{ steps.get_release.outputs.version }}'
-          body: 'This pull request merges the latest release into the production branch.'
+          PR_TITLE: "Release Merge from $PULL_REQUEST_FROM_BRANCH to $PULL_REQUEST_BRANCH"
+          PR_BODY: |
+              "This pull request merges the latest release into $PULL_REQUEST_BRANCH."
+               **Commits:**
+               ${{ env.commits }}
+      
          
