@@ -1,0 +1,75 @@
+name: Move2 Release to Another Branch
+
+on:
+  workflo-dispatch:
+  # release:
+  #   types: [published]
+
+jobs:
+  move_release:
+    runs-on: ubuntu-latest
+    env:
+      TARGET_BRANCH: production
+      PULL_REQUEST_TITLE: "Release merge into $TARGET_BRANCH"
+    steps:
+      - name: Checkout Main Branch
+        uses: actions/checkout@v2
+        with:
+          ref: master
+
+      - name: Create and Checkout Target Branch
+        run: git checkout -b $TARGET_BRANCH
+
+      - name: Push Changes to Target Branch
+        run: |
+          git push origin HEAD:$TARGET_BRANCH
+
+      - name: Create Pull Request
+        id: create_pr
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const title = process.env.PULL_REQUEST_TITLE;
+            const body = "This pull request merges the latest release into " + process.env.TARGET_BRANCH + ".";
+            const github = require('@actions/github');
+            const context = github.context;
+            const octokit = new github.getOctokit(process.env.GITHUB_TOKEN);
+            const { data: pr } = await octokit.pulls.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: title,
+              head: process.env.TARGET_BRANCH,
+              base: "main",
+              body: body,
+            });
+            console.log(pr.number);
+
+      - name: Update Pull Request Title
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const title = process.env.PULL_REQUEST_TITLE;
+            const github = require('@actions/github');
+            const context = github.context;
+            const octokit = new github.getOctokit(process.env.GITHUB_TOKEN);
+            const { data: updatedPr } = await octokit.pulls.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: ${{ steps.create_pr.outputs.data.number }},
+              title: title,
+            });
+
+      - name: Add Comment to Pull Request
+        uses: actions/github-script@v5
+        with:
+          script: |
+            const comment = "This is an automated comment.";
+            const github = require('@actions/github');
+            const context = github.context;
+            const octokit = new github.getOctokit(process.env.GITHUB_TOKEN);
+            await octokit.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: ${{ steps.create_pr.outputs.data.number }},
+              body: comment,
+            });

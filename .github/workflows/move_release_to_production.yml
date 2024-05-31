@@ -14,6 +14,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      - name: Set environment variables
+        run: |
+          echo "PULL_REQUEST_TITLE=Release Merge from $PULL_REQUEST_FROM_BRANCH to $PULL_REQUEST_BRANCH" >> $GITHUB_ENV
+          echo "PULL_REQUEST_BODY='This pull request merges the latest release into $PULL_REQUEST_BRANCH.\n\nCommits:\n${{ env.commits }}'" >> $GITHUB_ENV
+
       - name: create-pull-request
         uses: vsoch/pull-request-action@master
         env:
@@ -22,6 +27,7 @@ jobs:
           PULL_REQUEST_BRANCH: "production"
           PULL_REQUEST_FROM_BRANCH: "master"
         with:
-          title: 'Merge Latest Release: ${{ steps.get_release.outputs.version }}'
-          body: 'This pull request merges the latest release into the production branch.'
+          title: "${{ env.PULL_REQUEST_TITLE }}"
+          body: "${{ env.PULL_REQUEST_BODY }}"
+      
          
