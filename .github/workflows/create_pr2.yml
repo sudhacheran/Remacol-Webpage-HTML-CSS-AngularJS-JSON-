@@ -1,7 +1,7 @@
 name: Merge latest release from main to production Branch
 
 on:
-  # workflow_dispatch:   #Manual trigger for testing
+  workflow_dispatch:   #Manual trigger for testing
   # release:
   #   types: [published]  #Triggers when a release is published
 
