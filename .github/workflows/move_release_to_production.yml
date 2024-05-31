@@ -28,7 +28,7 @@ jobs:
 
       - name: Push Changes to Target Branch
         run: |
-          git pull
+          git pull "${{ steps.get_release.outputs.tag }}"
           git push origin production
 
       - name: Create Pull Request
