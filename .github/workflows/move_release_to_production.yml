@@ -16,8 +16,9 @@ jobs:
       - name: Get Latest Release Tag
         id: get_release
         run: |
-          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "tag=$latest_tag" >> "$GITHUB_OUTPUT"
+            version=$(curl -sSL https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r '.tag_name')
+            echo "version=$version" 
+            echo "tag=$version" >> "$GITHUB_OUTPUT"
 
       - name: Create and Checkout Target Branch
         run: git checkout -b production
