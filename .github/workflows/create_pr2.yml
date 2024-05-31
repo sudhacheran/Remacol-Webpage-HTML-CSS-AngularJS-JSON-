@@ -22,7 +22,10 @@ jobs:
             version=$(curl -sSL https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r '.tag_name')
             echo "version=$version" 
             echo "version=$version" >> "$GITHUB_OUTPUT"
-            echo "${{ steps.get_release.outputs.version }}"
+
+      - name: print variable
+        run: |
+           echo "The version is ${{ steps.get_release.outputs.version }}"
           
       # # To checkout the repository
       # - name: Checkout repository
