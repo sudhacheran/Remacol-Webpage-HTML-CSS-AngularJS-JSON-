@@ -1,43 +1,27 @@
-name: Move Release to Another Branch
+name: Merge latest release from main to production Branch
 
 on:
+  # workflow_dispatch:   #Manual trigger for testing
   release:
-      types: [published]
+    types: [published]  #Triggers when a release is published
 
 jobs:
-  move_release:
+  release-merge-to-production:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Main Branch
+      # Step to checkout the repository
+      - name: Checkout repository
         uses: actions/checkout@v2
-        with:
-          ref: master
 
-      - name: Get Latest Release Tag
-        id: get_release
-        run: |
-            version=$(curl -sSL https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r '.tag_name')
-            echo "version=$version" 
-            echo "tag=$version" >> "$GITHUB_OUTPUT"
-
-      - name: Create and Checkout Target Branch
-        run: git checkout -b production
-
-      # - name: Cherry-pick Release Commit
-      #   run: git cherry-pick ${{ steps.get_release.outputs.tag }}
-
-      - name: Push Changes to Target Branch
-        run: |
-          git pull origin master
-          git config pull.rebase true
-          git pull origin production
-          git push origin production
-
-      - name: Create Pull Request
+      - name: create-pull-request
         uses: vsoch/pull-request-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: "master"
+          PULL_REQUEST_BRANCH: "production"
+          PULL_REQUEST_FROM_BRANCH: "master"
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: production
-          title: "Merge latest release into production"
-          body: |
-            This pull request merges the latest release into production.
+          title: 'Merge Latest Release: ${{ steps.get_release.outputs.version }}'
+          body: 'This pull request merges the latest release into the production branch.'
+         
