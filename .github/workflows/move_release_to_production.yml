@@ -21,8 +21,8 @@ jobs:
           BRANCH: "master"
           PULL_REQUEST_BRANCH: "production"
           PULL_REQUEST_FROM_BRANCH: "master"
-          PR_TITLE: "Release Merge from $PULL_REQUEST_FROM_BRANCH to $PULL_REQUEST_BRANCH"
-          PR_BODY: |
+          PULL_REQUEST_TITLE: "Release Merge from $PULL_REQUEST_FROM_BRANCH to $PULL_REQUEST_BRANCH"
+          PULL_REQUEST_BODY: |
               "This pull request merges the latest release into $PULL_REQUEST_BRANCH."
                **Commits:**
                ${{ env.commits }}
