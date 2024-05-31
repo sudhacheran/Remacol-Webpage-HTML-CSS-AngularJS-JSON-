@@ -1,9 +1,8 @@
 name: Move Release to Another Branch
 
 on:
-  push:
-    branches:
-      - main
+  release:
+      [published]
 
 jobs:
   move_release:
