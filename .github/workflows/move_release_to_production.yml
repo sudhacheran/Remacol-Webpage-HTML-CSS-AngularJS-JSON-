@@ -30,6 +30,7 @@ jobs:
         run: |
           git pull origin master
           git pull origin production
+          git config pull.rebase false
           git push origin production
 
       - name: Create Pull Request
