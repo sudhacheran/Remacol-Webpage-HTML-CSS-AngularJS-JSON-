@@ -28,6 +28,7 @@ jobs:
 
       - name: Push Changes to Target Branch
         run: |
+          git pull
           git push origin production
 
       - name: Create Pull Request
