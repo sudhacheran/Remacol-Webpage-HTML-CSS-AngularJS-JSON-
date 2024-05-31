@@ -1,0 +1,37 @@
+name: Merge latest release from main to production Branch
+
+on:
+  workflow_dispatch:   #Manual trigger for testing
+  # release:
+  #   types: [published]  #Triggers when a release is published
+
+jobs:
+  release-merge-to-production:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Set up Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+      # To retrieve the latest release version
+      - name: Get latest release version
+        id: get_release
+        run: |
+          echo "name=version::$(curl -sSL https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r '.tag_name')" >> $GITHUB_OUTPUT
+          
+      # To checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # To create a pull request
+      - name: Create a pull request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: 'Merge latest release into production branch'
+          title: 'Merge Latest Release: ${{ steps.get_release.outputs.version }}'
+          body: 'This pull request merges the latest release into the production branch.'
+          branch: production 
+          base: master
+          head: ${{ steps.get_release.outputs.version }} # Checkout the latest release tag from the main branch

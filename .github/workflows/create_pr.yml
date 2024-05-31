@@ -1,30 +1,33 @@
-name: Merge Latest Release to Different Branch
+name: Merge Latest Release to Production Branch
 
 on:
   workflow_dispatch:
-  release:
-    types: [published]
+  # release:
+  #   types: [published] # Triggers when a new release is published
 
 jobs:
   merge-release:
     runs-on: ubuntu-latest
 
     steps:
+      # Step to retrieve the latest release version
       - name: Get latest release version
         id: get_release
-        run: echo "name=version::$(curl -sSL https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r '.tag_name')" >> $GITHUB_OUTPUT
-
-
+        run: |
+          echo "name=version::$(curl -sSL https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r '.tag_name')" >> $GITHUB_OUTPUT
+          
+      # Step to checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v2
 
+      # Step to create a pull request
       - name: Create a pull request
         uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: 'Merge latest release into target branch'
+          commit-message: 'Merge latest release into production branch'
           title: 'Merge Latest Release: ${{ steps.get_release.outputs.version }}'
           body: 'This pull request merges the latest release into the target branch.'
-          branch: branch_for_release_test # The target branch where you want to merge changes
+          branch: production # The target branch where you want to merge changes
           base: master # The base branch of the pull request
           head: 'refs/tags/${{ steps.get_release.outputs.version }}' # The release version as the source branch
