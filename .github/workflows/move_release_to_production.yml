@@ -22,8 +22,7 @@ jobs:
         uses: vsoch/pull-request-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          BRANCH: "master"
-          PULL_REQUEST_BRANCH: "production"
+          PULL_REQUEST_TO_BRANCH: "production"
           PULL_REQUEST_FROM_BRANCH: "master"
         with:
           title: "${{ env.PULL_REQUEST_TITLE }}"
