@@ -1,0 +1,40 @@
+name: Move Release to Another Branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  move_release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Main Branch
+        uses: actions/checkout@v2
+        with:
+          ref: main
+
+      - name: Get Latest Release Tag
+        id: get_release
+        run: |
+          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
+          echo "tag=$latest_tag" >> "$GITHUB_OUTPUT"
+
+      - name: Create and Checkout Target Branch
+        run: git checkout -b <target_branch_name>
+
+      - name: Cherry-pick Release Commit
+        run: git cherry-pick ${{ steps.get_release.outputs.tag }}
+
+      - name: Push Changes to Target Branch
+        run: |
+          git push origin production
+
+      - name: Create Pull Request
+        uses: vsoch/pull-request-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: production
+          title: "Merge latest release into production"
+          body: |
+            This pull request merges the latest release into production.
