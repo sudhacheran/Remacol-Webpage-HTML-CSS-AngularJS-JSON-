@@ -1,0 +1,20 @@
+name: My Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  my_job:
+    runs-on: ubuntu-latest
+
+    env:
+      PRODUCTION: "main"
+      MAIN: "production"
+
+    steps:
+      - name: Print environment variables
+        run: |
+          echo "MY_VARIABLE is $PRODUCTION"
+          echo "ANOTHER_VARIABLE is $MAIN"
