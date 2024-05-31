@@ -21,7 +21,6 @@ jobs:
           BRANCH: "master"
           PULL_REQUEST_BRANCH: "production"
           PULL_REQUEST_FROM_BRANCH: "master"
-          PULL_REQUEST_REVIEWERS: "sudhacheran"
         with:
           title: 'Merge Latest Release: ${{ steps.get_release.outputs.version }}'
           body: 'This pull request merges the latest release into the production branch.'
