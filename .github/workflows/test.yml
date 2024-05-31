@@ -14,5 +14,5 @@ jobs:
     steps:
       - name: Print environment variables
         run: |
-          echo "MY_VARIABLE is $PRODUCTION"
+          echo "MY_VARIABLE is $RELEASE_TOKEN"
           echo "ANOTHER_VARIABLE is $MAIN"
