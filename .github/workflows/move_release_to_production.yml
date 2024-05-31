@@ -23,8 +23,8 @@ jobs:
       - name: Create and Checkout Target Branch
         run: git checkout -b production
 
-      - name: Cherry-pick Release Commit
-        run: git cherry-pick ${{ steps.get_release.outputs.tag }}
+      # - name: Cherry-pick Release Commit
+      #   run: git cherry-pick ${{ steps.get_release.outputs.tag }}
 
       - name: Push Changes to Target Branch
         run: |
