@@ -1,4 +1,4 @@
-name: Test Create Pull Request
+name: Create Pull Request
 
 on:
   workflow_dispatch:
