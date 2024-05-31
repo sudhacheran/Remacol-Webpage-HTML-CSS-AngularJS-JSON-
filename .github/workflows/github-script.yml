@@ -1,8 +1,9 @@
 name: Move2 Release to Another Branch
 
 on:
-  release:
-    types: [published]
+  workflo-dispatch:
+  # release:
+  #   types: [published]
 
 jobs:
   move_release:
