@@ -26,5 +26,8 @@ jobs:
               "This pull request merges the latest release into $PULL_REQUEST_BRANCH."
                **Commits:**
                ${{ env.commits }}
+        with:
+           title: "$PULL_REQUEST_TITLE"
+           body: "$PULL_REQUEST_BODY"
       
          
