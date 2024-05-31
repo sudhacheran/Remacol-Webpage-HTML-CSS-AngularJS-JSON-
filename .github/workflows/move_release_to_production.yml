@@ -11,7 +11,7 @@ jobs:
       - name: Checkout Main Branch
         uses: actions/checkout@v2
         with:
-          ref: main
+          ref: master
 
       - name: Get Latest Release Tag
         id: get_release
@@ -20,7 +20,7 @@ jobs:
           echo "tag=$latest_tag" >> "$GITHUB_OUTPUT"
 
       - name: Create and Checkout Target Branch
-        run: git checkout -b <target_branch_name>
+        run: git checkout -b production
 
       - name: Cherry-pick Release Commit
         run: git cherry-pick ${{ steps.get_release.outputs.tag }}
