@@ -22,22 +22,18 @@ jobs:
             version=$(curl -sSL https://api.github.com/repos/${{ github.repository }}/releases/latest | jq -r '.tag_name')
             echo "version=$version" 
             echo "version=$version" >> "$GITHUB_OUTPUT"
-
-      - name: print variable
-        run: |
-           echo "The version is ${{ steps.get_release.outputs.version }}"
           
-      # # To checkout the repository
-      # - name: Checkout repository
-      #   uses: actions/checkout@v2
+      # To checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      # # To create a pull request
-      # - name: Create a pull request
-      #   uses: peter-evans/create-pull-request@v3
-      #   with:
-      #     commit-message: 'Merge latest release into production branch'
-      #     title: 'Merge Latest Release: ${{ steps.get_release.outputs.version }}'
-      #     body: 'This pull request merges the latest release into the production branch.'
-      #     branch: production 
-      #     base: master
-      #     head: ${{ steps.get_release.outputs.version }} # Checkout the latest release tag from the main branch
+      # To create a pull request
+      - name: Create a pull request
+        uses: peter-evans/create-pull-request@v3
+        with:
+          commit-message: 'Merge latest release into production branch'
+          title: 'Merge Latest Release: ${{ steps.get_release.outputs.version }}'
+          body: 'This pull request merges the latest release into the production branch.'
+          branch: production 
+          base: master
+          head: "${{ steps.get_release.outputs.version }}" # Checkout the latest release tag from the main branch
