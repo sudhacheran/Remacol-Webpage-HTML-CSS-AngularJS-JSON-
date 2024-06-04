@@ -1,7 +1,7 @@
-name: Move2 Release to Another Branch
+name: Move Release to Another Branch
 
 on:
-  workflo-dispatch:
+  workflow_dispatch:
   # release:
   #   types: [published]
 
