@@ -3,6 +3,8 @@ name: Merge latest release from main to production branch
 on:
   release:
     types: [published]  #Triggers when a release is published
+    branches:
+      - master
 
 jobs:
   release-merge-to-production:
