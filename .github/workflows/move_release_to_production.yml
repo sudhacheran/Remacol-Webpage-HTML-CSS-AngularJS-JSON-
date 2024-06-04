@@ -3,6 +3,9 @@ name: Merge latest release from main to production branch
 on:
   release:
     types: [published]  #Triggers when a release is published
+    branches:
+      - master
+
 
 jobs:
   release-merge-to-production:
@@ -22,7 +25,8 @@ jobs:
         uses: vsoch/pull-request-action@master
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PULL_REQUEST_TO_BRANCH: "production"
+          BRANCH: "master"
+          PULL_REQUEST_BRANCH: "production"
           PULL_REQUEST_FROM_BRANCH: "master"
           PULL_REQUEST_REVIEWERS: sudhacheran
         with:
