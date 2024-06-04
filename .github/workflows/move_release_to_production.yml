@@ -6,6 +6,7 @@ on:
     branches:
       - master
 
+
 jobs:
   release-merge-to-production:
     runs-on: ubuntu-latest
