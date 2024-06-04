@@ -2,8 +2,6 @@ runtime: php55
 api_version: 1
 threadsafe: true
 
-
-
 - url: /
   static_files: www/index.html
   upload: www/index.html
